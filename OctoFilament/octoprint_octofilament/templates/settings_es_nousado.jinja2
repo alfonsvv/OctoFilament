@@ -1,0 +1,202 @@
+<!--
+  OctoFilament - Panel de configuración del plugin
+  ------------------------------------------------
+  Este archivo define la interfaz de usuario del plugin dentro de los ajustes
+  de OctoPrint. Utiliza Knockout.js (data-bind) para enlazar los valores con
+  la configuración interna del plugin.
+
+  Cada campo modifica directamente un valor en:
+    settings.plugins.octofilament.<nombre>
+-->
+
+<div id="settings_plugin_octofilament">
+
+  <!-- Título principal del panel -->
+  <h2 style="margin-bottom: 1em;">OctoFilament by Alfons</h2>
+
+  <!-- Selección del GPIO usado para el sensor -->
+  <div class="form-group">
+    <label for="gpio_pin">
+      GPIO usado para el sensor
+      <i class="fa fa-info-circle" title="Número BCM del pin GPIO que detecta el filamento."></i>
+    </label>
+    <input type="number" id="gpio_pin" name="gpio_pin" class="form-control"
+           data-bind="value: settings.plugins.octofilament.gpio_pin">
+  </div>
+
+  <!-- Selección del nivel lógico que indica ausencia de filamento -->
+  <div class="form-group">
+    <label for="trigger_state">
+      Estado que indica ausencia de filamento
+      <i class="fa fa-info-circle" title="Selecciona si el sensor indica ausencia con LOW o HIGH."></i>
+    </label>
+    <select id="trigger_state" name="trigger_state" class="form-control"
+            data-bind="value: settings.plugins.octofilament.trigger_state">
+      <option value="LOW">LOW</option>
+      <option value="HIGH">HIGH</option>
+    </select>
+  </div>
+
+  <!-- Intervalo de lectura del sensor -->
+  <div class="form-group">
+    <label for="check_interval">
+      Frecuencia de lectura (segundos)
+      <i class="fa fa-info-circle" title="Intervalo en segundos para comprobar el estado del sensor."></i>
+    </label>
+    <input type="number" id="check_interval" name="check_interval" class="form-control"
+           data-bind="value: settings.plugins.octofilament.check_interval">
+  </div>
+
+  <hr>
+  <h4>Acciones tras pausa</h4>
+
+  <!-- BLOQUE 1: GCODE ejecutado inmediatamente tras pausar -->
+  <div class="form-group">
+    <label for="post_pause_delay1">
+      Delay bloque 1 (segundos)
+      <i class="fa fa-info-circle" title="Tiempo de espera antes de ejecutar el bloque 1."></i>
+    </label>
+    <input type="number" id="post_pause_delay1" name="post_pause_delay1" class="form-control"
+           data-bind="value: settings.plugins.octofilament.post_pause_delay1">
+
+    <label for="post_pause_gcode1">
+      GCODE post-pausa 1
+      <i class="fa fa-info-circle" title="Comandos GCODE que se ejecutan tras pausar."></i>
+    </label>
+    <textarea id="post_pause_gcode1" name="post_pause_gcode1" rows="6" class="form-control"
+              data-bind="value: settings.plugins.octofilament.post_pause_gcode1"></textarea>
+  </div>
+
+  <!-- BLOQUE 2: GCODE ejecutado tras una pausa larga -->
+  <div class="form-group">
+    <label for="post_pause_delay2">
+      Delay bloque 2 (segundos)
+      <i class="fa fa-info-circle" title="Tiempo de espera antes de ejecutar el bloque 2."></i>
+    </label>
+    <input type="number" id="post_pause_delay2" name="post_pause_delay2" class="form-control"
+           data-bind="value: settings.plugins.octofilament.post_pause_delay2">
+
+    <label for="post_pause_gcode2">
+      GCODE post-pausa 2
+      <i class="fa fa-info-circle" title="Segundo bloque de comandos GCODE tras el delay."></i>
+    </label>
+    <textarea id="post_pause_gcode2" name="post_pause_gcode2" rows="6" class="form-control"
+              data-bind="value: settings.plugins.octofilament.post_pause_gcode2"></textarea>
+  </div>
+
+  <!-- Checkbox anti‑rebotes para sensores mecánicos -->
+  <div class="checkbox">
+    <label>
+      <input type="checkbox"
+             data-bind="checked: settings.plugins.octofilament.prevent_bounce">
+      Prevenir rebotes del sensor
+      <i class="fa fa-info-circle"
+         title="Si se activa, el plugin hará 3 lecturas rápidas del sensor para evitar falsos cortes."></i>
+    </label>
+  </div>
+
+<!-- -------------------------------------------------------------
+     Micro‑retracción al reanudar
+     ------------------------------------------------------------- -->
+
+<!-- Grupo visual para micro‑retracción -->
+<div style="border:1px solid #ccc; padding:12px; border-radius:6px; margin-top:15px;">
+
+  <h4 style="margin-top:0;">Micro‑retracción al reanudar</h4>
+
+  <!-- Checkbox -->
+  <div class="checkbox">
+    <label>
+      <input type="checkbox"
+             data-bind="checked: settings.plugins.octofilament.enable_resume_retract">
+      Activar micro‑retracción al reanudar
+      <i class="fa fa-info-circle"
+         title="Si se activa, el plugin ejecutará una micro‑retracción justo al pulsar Resume para evitar rezumado."></i>
+    </label>
+  </div>
+
+  <!-- Retracción -->
+  <div class="form-group">
+    <label for="resume_retract_mm">
+      Retracción al reanudar (mm)
+      <i class="fa fa-info-circle"
+         title="Cantidad de retracción que se ejecuta automáticamente al reanudar."></i>
+    </label>
+    <input type="number" id="resume_retract_mm" step="0.1" min="0"
+           class="form-control"
+           data-bind="value: settings.plugins.octofilament.resume_retract_mm">
+  </div>
+
+  <!-- Velocidad -->
+  <div class="form-group">
+    <label for="resume_retract_speed">
+      Velocidad de retracción (mm/min)
+      <i class="fa fa-info-circle"
+         title="Velocidad de la micro‑retracción. 300 mm/min es un valor seguro."></i>
+    </label>
+    <input type="number" id="resume_retract_speed" step="10" min="50"
+           class="form-control"
+           data-bind="value: settings.plugins.octofilament.resume_retract_speed">
+  </div>
+
+</div>
+
+
+  <!-- Activar logs detallados -->
+  <div class="checkbox">
+    <label>
+      <input type="checkbox" data-bind="checked: settings.plugins.octofilament.enable_debug_logs">
+      Enable debug logs
+      <i class="fa fa-info-circle"
+         title="Si se activa, registra los cambios de estado del filamento en el archivo de log de OctoPrint (~/.octoprint/logs/octoprint.log)."></i>
+    </label>
+  </div>
+
+  <hr>
+
+  <!-- Bloque plegable con valores de ejemplo para ayudar al usuario -->
+  <details style="margin-top: 1em;">
+    <summary style="cursor:pointer; font-weight:bold;">
+      Mostrar valores de ejemplo
+    </summary>
+
+    <div style="margin-top: 1em;">
+      <ul>
+        <li><strong>GPIO usado para el sensor:</strong> <code>4</code></li>
+        <li><strong>Estado que indica ausencia de filamento:</strong> <code>HIGH</code></li>
+        <li><strong>Frecuencia de lectura:</strong> <code>1</code> segundo</li>
+        <li><strong>Delay bloque 1:</strong> <code>0</code> segundos</li>
+
+        <!-- Ejemplo de GCODE del bloque 1 -->
+        <li><strong>GCODE post-pausa 1:</strong>
+          <pre>M83 ; extrusión relativa
+G1 E-5 F300 ; retracción
+G4 P500 ; espera 0,5s
+G91 ; movimientos relativos
+G1 Z30 F300 ; subir 30mm
+G90 ; movimientos absolutos
+G1 X110 Y0 F6000 ; park
+;M104 S170 ; hotend 170º</pre>
+        </li>
+
+        <li><strong>Delay bloque 2:</strong> <code>3600</code> segundos</li>
+
+        <!-- Ejemplo de GCODE del bloque 2 -->
+        <li><strong>GCODE post-pausa 2:</strong>
+          <pre>M104 S0 ; hotend off
+M140 S0 ; cama off
+M84 ; motores off</pre>
+        </li>
+
+        <li><strong>Prevenir rebotes del sensor:</strong> <code>false</code></li>
+
+        <li><strong>Micro‑retracción al reanudar activada:</strong> <code>true</code></li>
+	<li><strong>Retracción al reanudar (mm):</strong> <code>2.5</code></li>
+	<li><strong>Velocidad de retracción (mm/min):</strong> <code>300</code></li>
+
+        <li><strong>Debug logs:</strong> <code>false</code></li>
+      </ul>
+    </div>
+  </details>
+
+</div>

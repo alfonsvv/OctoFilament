@@ -1,0 +1,34 @@
+{% autoescape true %}
+
+<!--
+  OctoFilament - Icono en la barra superior (navbar)
+  --------------------------------------------------
+  Este fragmento define el elemento visual que aparece en la barra superior
+  de OctoPrint. Se enlaza con el ViewModel de octofilament.js mediante
+  Knockout.js.
+
+  Elementos:
+    - <i>   → icono dinámico (check, cruz, interrogación…)
+    - <span> → texto del estado ("present", "absent", "error")
+
+  Ambos se actualizan automáticamente gracias a los observables:
+    iconClass, iconColor, filamentStatus
+-->
+
+<a href="#" title="Estado de filamento"
+   style="display: flex; align-items: center;">
+
+  <!-- Icono dinámico del estado del filamento -->
+  <!-- 'iconClass' define el icono FontAwesome -->
+  <!-- 'iconColor' define el color (verde, rojo, gris, naranja) -->
+  <i data-bind="attr: { 'class': iconClass },
+                style: { color: iconColor }"
+     style="margin-right: 6px;"></i>
+
+  <!-- Texto del estado actual del filamento -->
+  <!-- Se actualiza automáticamente con filamentStatus -->
+  <span data-bind="text: filamentStatus"></span>
+
+</a>
+
+{% endautoescape %}
