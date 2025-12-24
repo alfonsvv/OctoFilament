@@ -8,7 +8,7 @@ plugin_version = "0.3.0"
 plugin_description = "Filament monitor with temp restore and multi-pause"
 plugin_author = "Alfonso"
 plugin_license = "AGPLv3"
-plugin_url = "https://example.com"
+plugin_url = "https://github.com/alfonsvv/OctoFilament"
 
 setup(
     name=plugin_name,
