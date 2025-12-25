@@ -1,2 +1,0 @@
-[octoprint.plugin]
-octofilament = octoprint_octofilament
