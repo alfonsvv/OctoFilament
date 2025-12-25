@@ -1,0 +1,2 @@
+recursive-include octoprint_octofilament/static *
+recursive-include octoprint_octofilament/templates *
