@@ -1,0 +1,17 @@
+plugin:
+  name: OctoFilament
+  version: 0.3.0
+  description: Monitors filament presence using a GPIO sensor and automatically pauses or resumes prints.
+  author: Alfonso (alfonsvv)
+  license: AGPLv3
+  homepage: https://github.com/alfonsvv/OctoFilament
+  source: https://github.com/alfonsvv/OctoFilament
+  archive: https://github.com/alfonsvv/OctoFilament/releases/download/v0.3.0/OctoFilament-0.3.0.zip
+  tags:
+    - filament
+    - sensor
+    - gpio
+    - pause
+    - automation
+  python: ">=3,<4"
+  octoprint: ">=1.9.0"
