@@ -1,8 +1,7 @@
 # OctoFilament
 
 Detección de presencia de filamento para OctoPrint utilizando un sensor conectado a GPIO.  
-OctoFilament pausa automáticamente la impresión cuando el filamento se agota o se retira, y reanuda cuando vuelve a estar presente.
-
+OctoFilament pausa automáticamente la impresión cuando el filamento se agota o se retira.
 ---
 
 ## ✨ Características
@@ -10,7 +9,6 @@ OctoFilament pausa automáticamente la impresión cuando el filamento se agota o
 - Detección de presencia/ausencia de filamento mediante GPIO.
 - Compatible con sensores mecánicos, ópticos o de leva.
 - Pausa automática de impresión cuando el filamento desaparece.
-- Reanudación automática cuando vuelve a detectarse.
 - Pin GPIO configurable (por defecto GPIO4).
 - Lógica configurable (HIGH/LOW).
 - Interfaz limpia y minimalista integrada en OctoPrint.
@@ -115,5 +113,6 @@ Consulta el archivo `LICENSE` para más información.
 ## 🙌 Agradecimientos
 
 Gracias a la comunidad de OctoPrint por su documentación, ejemplos y soporte continuo.
+
 
 
