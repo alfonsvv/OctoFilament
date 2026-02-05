@@ -28,9 +28,7 @@ En OctoPrint:
 1. Ve a **Settings → Plugin Manager → Get More…**
 2. Haz clic en **… from URL**
 3. Introduce la URL del paquete:
-
-https://github.com/alfonsvv/OctoFilament/releases/download/v0.3.0/OctoFilament-0.3.0.zip
-   
+https://github.com/alfonsvv/OctoFilament/releases/download/2026/OctoFilament_260205.zip
 4. Instala y reinicia OctoPrint.
 
 ---
