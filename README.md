@@ -30,8 +30,7 @@ En OctoPrint:
 3. Introduce la URL del paquete:
 
 https://github.com/alfonsvv/OctoFilament/releases/download/v0.3.0/OctoFilament-0.3.0.zip
-
-
+   
 4. Instala y reinicia OctoPrint.
 
 ---
@@ -117,5 +116,6 @@ Consulta el archivo `LICENSE` para más información.
 Gracias a la comunidad de OctoPrint por su documentación, ejemplos y soporte continuo.
 
 Updated V260205
+
 
 
