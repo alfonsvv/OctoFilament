@@ -1,4 +1,59 @@
-/* OctoFilament CSS */
+/* -----------------------------------------------------------
+   OctoFilament - CSS del navbar
+   -----------------------------------------------------------
+   Objetivos:
+   - Centrar verticalmente el bloque del plugin
+   - Forzar el color del texto del estado a negro
+   - Ajustar el espaciado y alineación del dropdown
+   ----------------------------------------------------------- */
+
+/* Contenedor principal del plugin en el navbar */
 #navbar_plugin_octofilament {
+    height: 40px !important;      /* Igualar altura al resto del navbar */
+    display: flex;                /* Centrar verticalmente el contenido */
+    align-items: center;
     font-weight: bold;
+    color: black !important;      /* Forzar texto en negro */
+}
+
+/* El texto del estado (span) debe ser negro */
+#navbar_plugin_octofilament span {
+    color: black !important;
+}
+
+/* Botón principal: flex en el <a> */
+#navbar_plugin_octofilament > a.dropdown-toggle {
+    display: flex !important;
+    align-items: center !important;
+    height: 100%;
+    text-decoration: none;
+}
+
+/* Dropdown más consistente con el estilo de OctoPrint */
+#navbar_plugin_octofilament .dropdown-menu {
+    margin-top: 8px;           /* Separación del botón */
+    min-width: 180px;
+    padding: 10px;
+}
+
+/* Estilo de los elementos del menú */
+#navbar_plugin_octofilament .dropdown-menu li a {
+    color: black !important;   /* Texto del menú en negro */
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Icono dinámico del estado: inline-block, sin flex interno */
+#navbar_plugin_octofilament i[data-bind] {
+    display: inline-block !important;
+    line-height: 1 !important;
+    margin-right: 6px;
+}
+
+/* Flecha del dropdown: centrada */
+#navbar_plugin_octofilament i.fa-caret-down {
+    display: inline-block;
+    line-height: 1;
+    margin-left: 6px;
 }

@@ -104,6 +104,7 @@ class OctoFilamentPlugin(octoprint.plugin.StartupPlugin,
     # ---------------------------------------------------------------------
     def get_settings_defaults(self):
         return dict(
+            LoadUnload_Temperature=240, # Temperatura de carga y descarga de filamento
             gpio_pin=4,                 # GPIO BCM usado para el sensor
             trigger_state="HIGH",       # Nivel lógico que indica ausencia
             check_interval=1,           # Frecuencia de lectura del sensor (segundos)

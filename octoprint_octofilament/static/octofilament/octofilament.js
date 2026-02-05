@@ -56,6 +56,26 @@ $(function() {
         };
 
         // -------------------------------------------------------------------
+        // Cargar / descargar filamento
+        // -------------------------------------------------------------------
+        
+        // Cargar filamento
+        self.cargarFilamento = function() {
+            const temp = self.settingsViewModel.settings.plugins.octofilament.LoadUnload_Temperature();
+            OctoPrint.control.sendGcode(`M104 S${temp}`);
+            OctoPrint.control.sendGcode("M83");
+            OctoPrint.control.sendGcode("G1 E20 F300");
+        };
+
+        // Descargar filamento
+        self.extraerFilamento = function() {
+            const temp = self.settingsViewModel.settings.plugins.octofilament.LoadUnload_Temperature();
+            OctoPrint.control.sendGcode(`M104 S${temp}`);
+            OctoPrint.control.sendGcode("M83");
+            OctoPrint.control.sendGcode("G1 E-20 F300");
+        };
+
+        // -------------------------------------------------------------------
         // updateStatus()
         // Consulta el estado del filamento al backend del plugin.
         // Llama a la API REST: /api/plugin/octofilament

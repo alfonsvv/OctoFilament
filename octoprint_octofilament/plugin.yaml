@@ -9,3 +9,18 @@ plugin:
   type: plugin
   packages:
     - octoprint_octofilament
+settings:
+  LoadUnload_Temperature: 240
+  gpio_pin: 4
+  trigger_state: "HIGH"
+  check_interval: 1
+  post_pause_delay1: 0
+  post_pause_gcode1: ""
+  post_pause_delay2: 3600
+  post_pause_gcode2: ""
+  prevent_bounce: false
+  enable_resume_retract: true
+  resume_retract_mm: 2.5
+  resume_retract_speed: 300
+  enable_debug_logs: false
+

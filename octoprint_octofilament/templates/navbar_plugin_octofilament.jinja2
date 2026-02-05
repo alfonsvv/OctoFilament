@@ -1,34 +1,55 @@
 {% autoescape true %}
 
-<!--
-  OctoFilament - Icono en la barra superior (navbar)
-  --------------------------------------------------
-  Este fragmento define el elemento visual que aparece en la barra superior
-  de OctoPrint. Se enlaza con el ViewModel de octofilament.js mediante
-  Knockout.js.
+<!-- -----------------------------------------------------------
+     OctoFilament - Navbar dropdown
+     -----------------------------------------------------------
+     Este bloque muestra:
+       - Icono dinámico del estado del filamento
+       - Texto del estado (present / absent / error)
+       - Menú desplegable con acciones:
+           • Load Filament (extrude ↓)
+           • Unload Filament (retract ↑)
+     ----------------------------------------------------------- -->
 
-  Elementos:
-    - <i>   → icono dinámico (check, cruz, interrogación…)
-    - <span> → texto del estado ("present", "absent", "error")
+<div id="navbar_plugin_octofilament" class="dropdown">
 
-  Ambos se actualizan automáticamente gracias a los observables:
-    iconClass, iconColor, filamentStatus
--->
+  <!-- Botón principal: icono + estado + flecha -->
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown"
+     style="display: flex; align-items: center; text-decoration: none;">
 
-<a href="#" title="Estado de filamento"
-   style="display: flex; align-items: center;">
+    <!-- Icono dinámico -->
+    <i data-bind="attr: { 'class': iconClass },
+                  style: { color: iconColor }"
+       style="margin-right: 6px;"></i>
 
-  <!-- Icono dinámico del estado del filamento -->
-  <!-- 'iconClass' define el icono FontAwesome -->
-  <!-- 'iconColor' define el color (verde, rojo, gris, naranja) -->
-  <i data-bind="attr: { 'class': iconClass },
-                style: { color: iconColor }"
-     style="margin-right: 6px;"></i>
+    <!-- Texto del estado -->
+    <span data-bind="text: filamentStatus"></span>
 
-  <!-- Texto del estado actual del filamento -->
-  <!-- Se actualiza automáticamente con filamentStatus -->
-  <span data-bind="text: filamentStatus"></span>
+    <!-- Flecha del menú -->
+    <i class="fa fa-caret-down" style="margin-left: 6px;"></i>
+  </a>
 
-</a>
+  <!-- Menú desplegable -->
+  <ul class="dropdown-menu">
+
+    <!-- Load Filament (extrude) -->
+    <li>
+      <a href="#" data-bind="click: cargarFilamento">
+        <i class="fa fa-arrow-down"></i>
+        Load Filament
+      </a>
+    </li>
+
+    <!-- Unload Filament (retract) -->
+    <li>
+      <a href="#" data-bind="click: extraerFilamento">
+        <i class="fa fa-arrow-up"></i>
+        Unload Filament
+      </a>
+    </li>
+
+  </ul>
+
+</div>
 
 {% endautoescape %}

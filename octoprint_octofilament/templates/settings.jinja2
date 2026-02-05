@@ -1,12 +1,19 @@
 <!--
   OctoFilament - Panel de configuración del plugin
   ------------------------------------------------
-  Este archivo define la interfaz de usuario del plugin dentro de los ajustes
-  de OctoPrint. Utiliza Knockout.js (data-bind) para enlazar los valores con
-  la configuración interna del plugin.
+  NOTA IMPORTANTE:
+  Este archivo ha sido reorganizado en 4 grupos visuales para mejorar la claridad.
+  Todos los textos visibles para el usuario están en inglés.
+  Todos los comentarios internos están en español para facilitar el mantenimiento.
 
   Cada campo modifica directamente un valor en:
     settings.plugins.octofilament.<nombre>
+
+  Estructura de grupos:
+    1) Filament loading & unloading
+    2) Filament detection
+    3) On filament end detection
+    4) Resume micro‑retraction
 -->
 
 <div id="settings_plugin_octofilament">
@@ -14,146 +21,207 @@
   <!-- Título principal del panel -->
   <h2 style="margin-bottom: 1em;">OctoFilament by Alfons</h2>
 
-  <!-- Selección del GPIO usado para el sensor -->
-  <div class="form-group">
-    <label for="gpio_pin">
-      GPIO used for the sensor
-      <i class="fa fa-info-circle" title="BCM number of the GPIO pin that detects filament."></i>
-    </label>
-    <input type="number" id="gpio_pin" name="gpio_pin" class="form-control"
-           data-bind="value: settings.plugins.octofilament.gpio_pin">
+  <!-- ============================================================
+       GRUPO 1 — FILAMENT LOADING & UNLOADING
+       ============================================================ -->
+  <div style="
+      border:1px solid #ccc;
+      background:#f2f2f2;
+      padding:15px;
+      border-radius:6px;
+      margin-bottom:20px;
+  ">
+    <h4 style="margin-top:0;">Filament loading & unloading</h4>
+
+    <!-- Temperatura de carga/descarga -->
+    <div class="form-group">
+      <label for="LoadUnload_Temperature">
+        Load/Unload temperature (°C)
+        <i class="fa fa-info-circle"
+           title="Temperature used when loading or unloading filament."></i>
+      </label>
+      <input type="number" class="form-control" id="LoadUnload_Temperature"
+             data-bind="value: settings.plugins.octofilament.LoadUnload_Temperature">
+    </div>
   </div>
 
-  <!-- Selección del nivel lógico que indica ausencia de filamento -->
-  <div class="form-group">
-    <label for="trigger_state">
-      Logic level indicating filament absence
-      <i class="fa fa-info-circle" title="Select whether the sensor reports absence with LOW or HIGH."></i>
-    </label>
-    <select id="trigger_state" name="trigger_state" class="form-control"
-            data-bind="value: settings.plugins.octofilament.trigger_state">
-      <option value="LOW">LOW</option>
-      <option value="HIGH">HIGH</option>
-    </select>
+  <!-- ============================================================
+       GRUPO 2 — FILAMENT DETECTION
+       ============================================================ -->
+  <div style="
+      border:1px solid #ccc;
+      background:#f2f2f2;
+      padding:15px;
+      border-radius:6px;
+      margin-bottom:20px;
+  ">
+    <h4 style="margin-top:0;">Filament detection</h4>
+
+    <!-- GPIO -->
+    <div class="form-group">
+      <label for="gpio_pin">
+        GPIO used for the sensor
+        <i class="fa fa-info-circle"
+           title="BCM number of the GPIO pin connected to the filament sensor."></i>
+      </label>
+      <input type="number" id="gpio_pin" class="form-control"
+             data-bind="value: settings.plugins.octofilament.gpio_pin">
+    </div>
+
+    <!-- Nivel lógico -->
+    <div class="form-group">
+      <label for="trigger_state">
+        Logic level indicating filament absence
+        <i class="fa fa-info-circle"
+           title="Select whether the sensor reports absence with LOW or HIGH."></i>
+      </label>
+      <select id="trigger_state" class="form-control"
+              data-bind="value: settings.plugins.octofilament.trigger_state">
+        <option value="LOW">LOW</option>
+        <option value="HIGH">HIGH</option>
+      </select>
+    </div>
+
+    <!-- Intervalo de lectura -->
+    <div class="form-group">
+      <label for="check_interval">
+        Sensor polling interval (seconds)
+        <i class="fa fa-info-circle"
+           title="Interval in seconds to check the sensor state."></i>
+      </label>
+      <input type="number" id="check_interval" class="form-control"
+             data-bind="value: settings.plugins.octofilament.check_interval">
+    </div>
+
+    <!-- Anti‑rebotes (movido aquí al final del grupo) -->
+    <div class="checkbox">
+      <label>
+        <input type="checkbox"
+               data-bind="checked: settings.plugins.octofilament.prevent_bounce">
+        Prevent sensor bouncing
+        <i class="fa fa-info-circle"
+           title="If enabled, performs multiple quick reads to avoid false triggers from mechanical sensors."></i>
+      </label>
+    </div>
   </div>
 
-  <!-- Intervalo de lectura del sensor -->
-  <div class="form-group">
-    <label for="check_interval">
-      Sensor polling interval (seconds)
-      <i class="fa fa-info-circle" title="Interval in seconds to check the sensor state."></i>
-    </label>
-    <input type="number" id="check_interval" name="check_interval" class="form-control"
-           data-bind="value: settings.plugins.octofilament.check_interval">
+  <!-- ============================================================
+       GRUPO 3 — ON FILAMENT END DETECTION
+       ============================================================ -->
+  <div style="
+      border:1px solid #ccc;
+      background:#f2f2f2;
+      padding:15px;
+      border-radius:6px;
+      margin-bottom:20px;
+  ">
+    <h4 style="margin-top:0;">On filament end detection</h4>
+
+    <!-- BLOQUE 1 -->
+    <div class="form-group">
+      <label for="post_pause_delay1">
+        GCODE Block 1 delay (seconds)
+        <i class="fa fa-info-circle"
+           title="Time to wait before executing GCODE block 1."></i>
+      </label>
+      <input type="number" id="post_pause_delay1" class="form-control"
+             data-bind="value: settings.plugins.octofilament.post_pause_delay1">
+
+      <label for="post_pause_gcode1">
+        GCODE Block 1
+        <i class="fa fa-info-circle"
+           title="First GCODE block executed after filament end detection."></i>
+      </label>
+      <textarea id="post_pause_gcode1" rows="6" class="form-control"
+                data-bind="value: settings.plugins.octofilament.post_pause_gcode1"></textarea>
+    </div>
+
+    <!-- BLOQUE 2 -->
+    <div class="form-group">
+      <label for="post_pause_delay2">
+        GCODE Block 2 delay (seconds)
+        <i class="fa fa-info-circle"
+           title="Time to wait before executing GCODE block 2."></i>
+      </label>
+      <input type="number" id="post_pause_delay2" class="form-control"
+             data-bind="value: settings.plugins.octofilament.post_pause_delay2">
+
+      <label for="post_pause_gcode2">
+        GCODE Block 2
+        <i class="fa fa-info-circle"
+           title="Second GCODE block executed after filament end detection."></i>
+      </label>
+      <textarea id="post_pause_gcode2" rows="6" class="form-control"
+                data-bind="value: settings.plugins.octofilament.post_pause_gcode2"></textarea>
+    </div>
   </div>
 
-  <hr>
-  <h4>Actions after pause</h4>
+  <!-- ============================================================
+       GRUPO 4 — RESUME MICRO‑RETRACTION
+       ============================================================ -->
+  <div style="
+      border:1px solid #ccc;
+      background:#f2f2f2;
+      padding:15px;
+      border-radius:6px;
+      margin-bottom:20px;
+  ">
+    <h4 style="margin-top:0;">Resume micro‑retraction</h4>
 
-  <!-- BLOQUE 1: GCODE ejecutado inmediatamente tras pausar -->
-  <div class="form-group">
-    <label for="post_pause_delay1">
-      GCODE Block 1 delay (seconds)
-      <i class="fa fa-info-circle" title="Time to wait before executing GCODE block 1."></i>
-    </label>
-    <input type="number" id="post_pause_delay1" name="post_pause_delay1" class="form-control"
-           data-bind="value: settings.plugins.octofilament.post_pause_delay1">
+    <!-- Activar micro‑retracción -->
+    <div class="checkbox">
+      <label>
+        <input type="checkbox"
+               data-bind="checked: settings.plugins.octofilament.enable_resume_retract">
+        Enable micro‑retraction on resume
+        <i class="fa fa-info-circle"
+           title="If enabled, performs a small retraction when resuming to prevent oozing."></i>
+      </label>
+    </div>
 
-    <label for="post_pause_gcode1">
-      Post‑pause GCODE BLOCK 1
-      <i class="fa fa-info-circle" title="GCODE commands executed after pausing (after delay 1)"></i>
-    </label>
-    <textarea id="post_pause_gcode1" name="post_pause_gcode1" rows="6" class="form-control"
-              data-bind="value: settings.plugins.octofilament.post_pause_gcode1"></textarea>
+    <!-- Cantidad -->
+    <div class="form-group">
+      <label for="resume_retract_mm">
+        Retraction amount (mm)
+        <i class="fa fa-info-circle"
+           title="Amount of retraction executed when resuming."></i>
+      </label>
+      <input type="number" id="resume_retract_mm" step="0.1" min="0"
+             class="form-control"
+             data-bind="value: settings.plugins.octofilament.resume_retract_mm">
+    </div>
+
+    <!-- Velocidad -->
+    <div class="form-group">
+      <label for="resume_retract_speed">
+        Retraction speed (mm/min)
+        <i class="fa fa-info-circle"
+           title="Speed of the micro‑retraction."></i>
+      </label>
+      <input type="number" id="resume_retract_speed" step="10" min="50"
+             class="form-control"
+             data-bind="value: settings.plugins.octofilament.resume_retract_speed">
+    </div>
   </div>
 
-  <!-- BLOQUE 2: GCODE ejecutado tras una pausa larga -->
-  <div class="form-group">
-    <label for="post_pause_delay2">
-      GCODE Block 2 delay (seconds)
-      <i class="fa fa-info-circle" title="Time to wait before executing GCODE block 2."></i>
-    </label>
-    <input type="number" id="post_pause_delay2" name="post_pause_delay2" class="form-control"
-           data-bind="value: settings.plugins.octofilament.post_pause_delay2">
-
-    <label for="post_pause_gcode2">
-      Post‑pause GCODE 2
-      <i class="fa fa-info-circle" title="Second GCODE block executed after pausing (after delay 2)."></i>
-    </label>
-    <textarea id="post_pause_gcode2" name="post_pause_gcode2" rows="6" class="form-control"
-              data-bind="value: settings.plugins.octofilament.post_pause_gcode2"></textarea>
-  </div>
-
-  <!-- Checkbox anti‑rebotes para sensores mecánicos -->
+  <!-- ============================================================
+       OPCIÓN DE LOGS
+       ============================================================ -->
   <div class="checkbox">
     <label>
       <input type="checkbox"
-             data-bind="checked: settings.plugins.octofilament.prevent_bounce">
-      Prevent sensor bouncing
-      <i class="fa fa-info-circle"
-         title="If enabled, the plugin performs 3 quick reads to avoid false triggers."></i>
-    </label>
-  </div>
-
-<!-- -------------------------------------------------------------
-     Micro‑retracción al reanudar
-     ------------------------------------------------------------- -->
-
-<!-- Grupo visual para micro‑retracción -->
-<div style="border:1px solid #ccc; padding:12px; border-radius:6px; margin-top:15px;">
-
-  <h4 style="margin-top:0;">Resume micro‑retraction</h4>
-
-  <!-- Checkbox -->
-  <div class="checkbox">
-    <label>
-      <input type="checkbox"
-             data-bind="checked: settings.plugins.octofilament.enable_resume_retract">
-      Enable micro‑retraction on resume
-      <i class="fa fa-info-circle"
-         title="If enabled, a small retraction is executed when pressing Resume to prevent oozing."></i>
-    </label>
-  </div>
-
-  <!-- Retracción -->
-  <div class="form-group">
-    <label for="resume_retract_mm">
-      Retraction amount (mm)
-      <i class="fa fa-info-circle"
-         title="Amount of retraction automatically executed when resuming."></i>
-    </label>
-    <input type="number" id="resume_retract_mm" step="0.1" min="0"
-           class="form-control"
-           data-bind="value: settings.plugins.octofilament.resume_retract_mm">
-  </div>
-
-  <!-- Velocidad -->
-  <div class="form-group">
-    <label for="resume_retract_speed">
-      Retraction speed (mm/min)
-      <i class="fa fa-info-circle"
-         title="Speed of the micro‑retraction. 300 mm/min is a safe value."></i>
-    </label>
-    <input type="number" id="resume_retract_speed" step="10" min="50"
-           class="form-control"
-           data-bind="value: settings.plugins.octofilament.resume_retract_speed">
-  </div>
-
-</div>
-
-  <!-- Activar logs detallados -->
-  <div class="checkbox">
-    <label>
-      <input type="checkbox" data-bind="checked: settings.plugins.octofilament.enable_debug_logs">
+             data-bind="checked: settings.plugins.octofilament.enable_debug_logs">
       Enable debug logs
       <i class="fa fa-info-circle"
-         title="If enabled, logs all filament state changes into OctoPrint’s log file (~/.octoprint/logs/octoprint.log)."></i>
+         title="If enabled, logs all filament state changes into OctoPrint’s log file."></i>
     </label>
   </div>
 
   <hr>
 
-  <!-- Bloque plegable con valores de ejemplo para ayudar al usuario -->
+  <!-- ============================================================
+       SHOW EXAMPLE VALUES (ACTUALIZADO)
+       ============================================================ -->
   <details style="margin-top: 1em;">
     <summary style="cursor:pointer; font-weight:bold;">
       Show example values
@@ -161,27 +229,24 @@
 
     <div style="margin-top: 1em;">
       <ul>
+        <li><strong>Load/Unload temperature:</strong> <code>240</code> °C</li>
         <li><strong>GPIO used for the sensor:</strong> <code>4</code></li>
         <li><strong>Trigger state for absence:</strong> <code>HIGH</code></li>
         <li><strong>Polling interval:</strong> <code>1</code> second</li>
-        <li><strong>Block 1 delay:</strong> <code>0</code> seconds</li>
 
-        <!-- Ejemplo de GCODE del bloque 1 -->
-        <li><strong>Post‑pause GCODE 1:</strong>
+        <li><strong>Block 1 delay:</strong> <code>0</code> seconds</li>
+        <li><strong>GCODE Block 1:</strong>
           <pre>M83 ; relative extrusion
 G1 E-5 F300 ; retraction
 G4 P500 ; wait 0.5s
 G91 ; relative moves
 G1 Z30 F300 ; lift 30mm
 G90 ; absolute moves
-G1 X110 Y0 F6000 ; park
-;M104 S170 ; hotend 170º</pre>
+G1 X110 Y0 F6000 ; park</pre>
         </li>
 
         <li><strong>Block 2 delay:</strong> <code>3600</code> seconds</li>
-
-        <!-- Ejemplo de GCODE del bloque 2 -->
-        <li><strong>Post‑pause GCODE 2:</strong>
+        <li><strong>GCODE Block 2:</strong>
           <pre>M104 S0 ; hotend off
 M140 S0 ; bed off
 M84 ; motors off</pre>
